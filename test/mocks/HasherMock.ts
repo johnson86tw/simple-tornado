@@ -4,11 +4,17 @@ import { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import { toFixedHex } from "../../utils/ethers";
 import fs from "fs";
+import path from "path";
 
 const { BigNumber } = ethers;
 const circomlib = require("circomlib");
 const mimcsponge = circomlib.mimcsponge;
-const HasherPath = "../../build/contracts/Hasher.json";
+const hashPath = path.join(
+  __dirname,
+  "..",
+  "..",
+  "build/contracts/Hasher.json"
+);
 
 let Hasher: ContractFactory;
 let HasherMock: ContractFactory;
@@ -22,15 +28,15 @@ let addr2: SignerWithAddress;
 let addrs: SignerWithAddress[];
 
 before(async () => {
-  if (!fs.existsSync(HasherPath)) {
+  if (!fs.existsSync(hashPath)) {
     throw new Error(
       "you should run `node ./scripts/compileHasher.js` for Hasher's abi and bytecode"
     );
   }
 
   Hasher = await ethers.getContractFactory(
-    require(HasherPath).abi,
-    require(HasherPath).bytecode
+    require(hashPath).abi,
+    require(hashPath).bytecode
   );
   HasherMock = await ethers.getContractFactory("HasherMock");
   [owner, addr1, addr2, ...addrs] = await ethers.getSigners();

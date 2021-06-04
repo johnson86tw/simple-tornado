@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^3.4.0",
-    "circomlib": "git+https://github.com/tornadocash/circomlib.git#3b492f9801573eebcfe1b6c584afe8a3beecf2b4",
+    "circomlib": "^0.5.2",
     "dotenv": "^10.0.0",
     "snarkjs": "^0.4.4"
   }
