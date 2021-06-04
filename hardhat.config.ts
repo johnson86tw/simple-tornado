@@ -1,7 +1,6 @@
 import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-ethers";
-import "@openzeppelin/hardhat-upgrades";
 
 // import { ethers } from "hardhat";
 
