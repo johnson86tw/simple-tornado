@@ -6,7 +6,7 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-wit
 import { groth16 } from "snarkjs";
 import fs from "fs";
 import path from "path";
-import { unstringifyBigInts } from "../utils/ethers";
+import { unstringifyBigInts } from "../../utils/ethers";
 
 let Verifier: ContractFactory;
 let verifier: Contract;
@@ -16,8 +16,8 @@ let addr1: SignerWithAddress;
 let addr2: SignerWithAddress;
 let addrs: SignerWithAddress[];
 
-const publicPath = path.join(__dirname, "public.json");
-const proofPath = path.join(__dirname, "proof.json");
+const publicPath = path.join(__dirname, "..", "build", "public.json");
+const proofPath = path.join(__dirname, "..", "build", "proof.json");
 
 const pub = unstringifyBigInts(JSON.parse(fs.readFileSync(publicPath, "utf8")));
 const proof = unstringifyBigInts(

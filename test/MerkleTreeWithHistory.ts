@@ -4,6 +4,12 @@ import { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 const { utils, BigNumber } = ethers;
 import { toFixedHex } from "../utils/ethers";
+const circomlib = require("circomlib");
+const mimcsponge = circomlib.mimcsponge;
+
+function hashLeftRight(left: number, right: number) {
+  return mimcsponge.multiHash([BigInt(left), BigInt(right)]).toString();
+}
 
 let Hasher: ContractFactory;
 let MerkleTreeWithHistory: ContractFactory;
@@ -16,10 +22,12 @@ let addr1: SignerWithAddress;
 let addr2: SignerWithAddress;
 let addrs: SignerWithAddress[];
 
+const HasherPath = "../build/contracts/Hasher.json";
+
 before(async () => {
   Hasher = await ethers.getContractFactory(
-    require("../Hasher.json").abi,
-    require("../Hasher.json").bytecode
+    require(HasherPath).abi,
+    require(HasherPath).bytecode
   );
   MerkleTreeWithHistory = await ethers.getContractFactory(
     "MerkleTreeWithHistory"
@@ -33,5 +41,13 @@ beforeEach(async function () {
 });
 
 describe("Hasher", () => {
-  it("should test", async () => {});
+  it("should return MiMC hash of 123 and 456", async () => {
+    const hash = await merkleTreeWithHistory.hashLeftRight(
+      toFixedHex(123),
+      toFixedHex(456)
+    );
+    expect(hash).to.equal(
+      BigNumber.from(hashLeftRight(123, 456)).toHexString()
+    );
+  });
 });

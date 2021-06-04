@@ -12,5 +12,3 @@ template HashLeftRight() {
     hasher.k <== 0;
     hash <== hasher.outs[0];
 }
-
-component main = HashLeftRight();
