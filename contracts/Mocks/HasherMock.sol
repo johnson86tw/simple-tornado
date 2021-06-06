@@ -16,11 +16,7 @@ contract HasherMock {
         hasherAddress = _hasher;
     }
 
-    function hashLeftRight(bytes32 _left, bytes32 _right)
-        public
-        view
-        returns (bytes32)
-    {
+    function hashLeftRight(bytes32 _left, bytes32 _right) public view returns (bytes32) {
         uint256 R = uint256(_left);
         uint256 C = 0;
         (R, C) = Hasher(hasherAddress).MiMCSponge(R, C, 0);

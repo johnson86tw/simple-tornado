@@ -2,10 +2,7 @@
 pragma solidity ^0.7.0;
 
 interface Hasher {
-    function MiMCSponge(uint256 in_xL, uint256 in_xR)
-        external
-        pure
-        returns (uint256 xL, uint256 xR);
+    function MiMCSponge(uint256 in_xL, uint256 in_xR) external pure returns (uint256 xL, uint256 xR);
 }
 
 contract MerkleTreeWithHistory {
@@ -22,11 +19,7 @@ contract MerkleTreeWithHistory {
         hasherAddress = _hasher;
     }
 
-    function hashLeftRight(bytes32 _left, bytes32 _right)
-        public
-        view
-        returns (bytes32)
-    {
+    function hashLeftRight(bytes32 _left, bytes32 _right) public view returns (bytes32) {
         uint256 R = uint256(_left);
         uint256 C = 0;
         (R, C) = Hasher(hasherAddress).MiMCSponge(R, C);
