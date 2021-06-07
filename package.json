@@ -1,5 +1,8 @@
 {
   "name": "simple-tornado",
+  "scripts": {
+    "ts-node": "ts-node"
+  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.1",
     "@nomiclabs/hardhat-waffle": "^2.0.1",

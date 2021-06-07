@@ -7,4 +7,4 @@
 - solidity 0.7.0
 
 ## Questions
-- why we need FIELD_SIZE and ZERO_VALUE in the merkle tree?
+- why we need FIELD_SIZE and ZERO_VALUE in the merkle tree? (seems to be called "snark scalar field")

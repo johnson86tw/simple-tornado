@@ -4,17 +4,9 @@ import { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import { toFixedHex } from "../utils/ethers";
 import { shouldBehaveLikeMerkleTree } from "./merkleTree.behavior";
+import { MiMCSponge as hashLeftRight } from "../utils/merkleTree";
 
-const circomlib = require("circomlib");
-const mimcsponge = circomlib.mimcsponge;
 const HasherPath = "../build/contracts/Hasher.json";
-
-// return hex string with 0x
-function hashLeftRight(left: string, right: string): string {
-  return (
-    "0x" + mimcsponge.multiHash([BigInt(left), BigInt(right)]).toString(16)
-  );
-}
 
 let Hasher: ContractFactory;
 let MerkleTree: ContractFactory;
@@ -44,6 +36,7 @@ beforeEach(async function () {
 describe("#contructor", () => {
   it("should initialize", async () => {
     const zeroValue: BigNumber = await merkleTree.ZERO_VALUE();
+
     expect(await merkleTree.zeros(0)).to.equal(zeroValue);
     expect(await merkleTree.filledSubtrees(0)).to.equal(zeroValue);
   });
@@ -51,11 +44,13 @@ describe("#contructor", () => {
 
 describe("#hashLeftRight", () => {
   it("should return MiMC multi-hash inside the field", async () => {
-    const hash = await merkleTree.hashLeftRight(
-      toFixedHex(123),
-      toFixedHex(456)
+    const left = toFixedHex(123);
+    const right = toFixedHex(456);
+    const hash = await merkleTree.hashLeftRight(left, right);
+
+    expect(hash).to.equal(
+      "0x" + BigInt(hashLeftRight(left, right)).toString(16)
     );
-    expect(hash).to.equal(hashLeftRight("123", "456"));
   });
 });
 
