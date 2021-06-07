@@ -19,7 +19,7 @@ contract MerkleTree {
     // for insert calculation
     bytes32[] public zeros;
     bytes32[] public filledSubtrees;
-    uint32 public currentIndex = 0;
+    uint32 public currentRootIndex = 0;
     uint32 public nextIndex = 0;
     uint32 public constant ROOT_HISTORY_SIZE = 100;
     bytes32[ROOT_HISTORY_SIZE] public roots;
@@ -55,7 +55,52 @@ contract MerkleTree {
         return bytes32(R);
     }
 
-    function test() public pure returns (uint32) {
-        return uint32(3) / 2;
+    function _insert(bytes32 _leaf) internal returns (uint32 index) {
+        uint32 currentIndex = nextIndex;
+        require(currentIndex < uint32(2)**levels, "Merkle tree is full. No more leaf can be added");
+        nextIndex += 1;
+        bytes32 currentLevelHash = _leaf;
+        bytes32 left;
+        bytes32 right;
+
+        for (uint32 i = 0; i < levels; i++) {
+            if (currentIndex % 2 == 0) {
+                left = currentLevelHash;
+                right = zeros[i];
+                filledSubtrees[i] = currentLevelHash;
+            } else {
+                left = filledSubtrees[i];
+                right = currentLevelHash;
+            }
+
+            currentLevelHash = hashLeftRight(left, right);
+            currentIndex /= 2;
+        }
+
+        currentRootIndex = (currentRootIndex + 1) % ROOT_HISTORY_SIZE;
+        roots[currentRootIndex] = currentLevelHash;
+        return nextIndex - 1;
+    }
+
+    function isKnownRoot(bytes32 _root) public view returns (bool) {
+        if (uint256(_root) == 0) {
+            return false;
+        }
+
+        uint32 i = currentRootIndex;
+        do {
+            if (roots[i] == _root) {
+                return true;
+            }
+            if (i == 0) {
+                i = ROOT_HISTORY_SIZE;
+            }
+            i--;
+        } while (i != currentRootIndex);
+        return false;
+    }
+
+    function getLastRoot() public view returns (bytes32) {
+        return roots[currentRootIndex];
     }
 }
