@@ -1,6 +1,7 @@
 {
   "name": "simple-tornado",
   "scripts": {
+    "test": "npx hardhat test --no-compile",
     "ts-node": "ts-node"
   },
   "devDependencies": {

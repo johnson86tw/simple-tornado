@@ -14,7 +14,7 @@ contract MerkleTree {
     uint256 public constant ZERO_VALUE = 21663839004416932945382355908790599225266501822907911457504978515578255421292; // = keccak256("tornado") % FIELD_SIZE
 
     uint32 public levels;
-    address public hasherAddress;
+    Hasher public hasher;
 
     // for insert calculation
     bytes32[] public zeros;
@@ -24,11 +24,11 @@ contract MerkleTree {
     uint32 public constant ROOT_HISTORY_SIZE = 100;
     bytes32[ROOT_HISTORY_SIZE] public roots;
 
-    constructor(uint32 _levels, address _hasherAddress) {
+    constructor(uint32 _levels, Hasher _hasher) {
         require(_levels > 0, "_level should be greater than zero");
         require(_levels < 32, "_level should be less than 32");
         levels = _levels;
-        hasherAddress = _hasherAddress;
+        hasher = _hasher;
 
         // fill zeros and filledSubtrees depend on levels
         bytes32 currentZero = bytes32(ZERO_VALUE);
@@ -49,9 +49,9 @@ contract MerkleTree {
         uint256 R = uint256(_left);
         uint256 C = 0;
         uint256 k = 0;
-        (R, C) = Hasher(hasherAddress).MiMCSponge(R, C, k);
+        (R, C) = hasher.MiMCSponge(R, C, k);
         R = addmod(R, uint256(_right), FIELD_SIZE);
-        (R, C) = Hasher(hasherAddress).MiMCSponge(R, C, k);
+        (R, C) = hasher.MiMCSponge(R, C, k);
         return bytes32(R);
     }
 
