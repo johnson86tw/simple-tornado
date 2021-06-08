@@ -1,7 +1,9 @@
-import { expect } from "chai";
-import { toFixedHex } from "../utils/ethers";
-import { MerkleTree, MiMCSponge } from "../utils/merkleTree";
+import { MerkleTree } from "../utils/merkleTree";
 
 const levels = Number(process.env.MERKLE_TREE_HEIGHT) || 16;
 
-export async function shouldBehaveLikeProof() {}
+const tree = new MerkleTree(levels);
+
+export async function shouldBehaveLikeProof() {
+  it("#test", async () => {});
+}

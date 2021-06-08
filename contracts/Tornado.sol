@@ -57,7 +57,7 @@ abstract contract Tornado is MerkleTree, ReentrancyGuard {
         address payable _relayer,
         uint256 _fee,
         uint256 _refund
-    ) internal nonReentrant {
+    ) external payable nonReentrant {
         require(_fee <= denomination, "Fee exceeds transfer value");
         require(!nullifierHashes[_nullifierHash], "The not has been already spent");
         require(isKnownRoot(_root), "Cannot find your merkle root");
