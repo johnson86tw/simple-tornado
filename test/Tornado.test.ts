@@ -1,9 +1,9 @@
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
-import { BigNumber, Contract, ContractFactory, utils } from "ethers";
+import { Contract, ContractFactory, utils } from "ethers";
 import { ethers } from "hardhat";
-import { formatEther, toFixedHex } from "../utils/ethers";
-import { shouldBehaveLikeMerkleTree } from "./merkleTree.behavior";
-import { MerkleTree as MerkleTreeUtil, MiMCSponge as hashLeftRight } from "../utils/merkleTree";
+import { toFixedHex } from "../utils/ethers";
+import { shouldBehaveLikeProof } from "./proof.behavior";
 
 const HasherPath = "../build/contracts/Hasher.json";
 const levels = Number(process.env.MERKLE_TREE_HEIGHT) || 20;
@@ -17,10 +17,13 @@ let hasher: Contract;
 let verifier: Contract;
 let tornado: Contract;
 
+let signers: SignerWithAddress[];
+
 before(async () => {
   Hasher = await ethers.getContractFactory(require(HasherPath).abi, require(HasherPath).bytecode);
   Verifier = await ethers.getContractFactory("Verifier");
   Tornado = await ethers.getContractFactory("ETHTornado");
+  signers = await ethers.getSigners();
 });
 
 beforeEach(async function () {
@@ -57,10 +60,10 @@ describe("#deposit", () => {
   });
 });
 
+describe("snark proof verification on js side", () => {
+  shouldBehaveLikeProof();
+});
+
 describe("#withdraw", () => {
-  it("", async () => {});
-
-  it("", async () => {});
-
-  it("", async () => {});
+  it("should work", async () => {});
 });

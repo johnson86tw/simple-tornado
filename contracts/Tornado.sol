@@ -45,4 +45,38 @@ abstract contract Tornado is MerkleTree, ReentrancyGuard {
     }
 
     function _processDeposit() internal virtual;
+
+    function withdraw(
+        uint256[2] memory a,
+        uint256[2][2] memory b,
+        uint256[2] memory c,
+        uint256[1] memory input,
+        bytes32 _root,
+        bytes32 _nullifierHash,
+        address payable _recipient,
+        address payable _relayer,
+        uint256 _fee,
+        uint256 _refund
+    ) internal nonReentrant {
+        require(_fee <= denomination, "Fee exceeds transfer value");
+        require(!nullifierHashes[_nullifierHash], "The not has been already spent");
+        require(isKnownRoot(_root), "Cannot find your merkle root");
+        require(verifier.verifyProof(a, b, c, input), "Invalid withdraw proof");
+
+        nullifierHashes[_nullifierHash] = true;
+        _processWithdraw(_recipient, _relayer, _fee, _refund);
+
+        emit Withdrawal(_recipient, _nullifierHash, _relayer, _fee);
+    }
+
+    function _processWithdraw(
+        address payable _recipient,
+        address payable _relayer,
+        uint256 _fee,
+        uint256 _refund
+    ) internal virtual;
+
+    function isSpent(bytes32 _nullifierHash) public view returns (bool) {
+        return nullifierHashes[_nullifierHash];
+    }
 }
