@@ -1,4 +1,5 @@
 # Simple Tornado
+This is a simple version of [Tornado Cash](https://tornado.cash/) which is a private transactions solution based on zkSNARKs. The project rewrites from [tornado-core](https://github.com/tornadocash/tornado-core), and it's suitable for a beginner to learn development of applications with Zero Knowledge Proof.
 
 ## Tech Stack
 - circom 0.5.45
@@ -6,24 +7,39 @@
 - circomlib 0.5.2
 - solidity 0.7.0
 - ethers: 5.0.26
-- hardhat: 2.0.8
+- hardhat
+- typescript
+
+## Pre-requisites
+- install Node.js.
+- Install circom and snarkjs.
+```
+npm install -g circom
+npm install -g snarkjs
+```
 
 ## Build
+- install dependencies
 ```
-yarn build
+yarn
 ```
 - To build circuits, you should install circom and snark in npm global for cmd like `circom` and `snarkjs` at first.
 
+```
+yarn build
+```
+
 ## Test
+- total 78.73 seconds
+
 ```
 yarn test
 ```
 or
 ```
-npx hardhat test test/TEST_FILENAME
+npx hardhat test test/FILENAME.test.ts
 ```
-- you should compile Hasher contract at first.
-
+- pre-request: build Verifier.sol and Hasher.json by `yarn build` at first.
 
 ## Questions
 - why we need FIELD_SIZE and ZERO_VALUE in the merkle tree? (seems to be called "snark scalar field")

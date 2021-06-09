@@ -5,7 +5,7 @@
     "build:circuits": "bash ./scripts/build_circuits.sh && bash ./scripts/build_verifier.sh",
     "build:hasher": "node ./scripts/compileHasher.js",
     "build": "yarn build:circuits && yarn build:hasher",
-    "test": "npx hardhat test --no-compile",
+    "test": "npx hardhat test",
     "ts": "ts-node"
   },
   "devDependencies": {
