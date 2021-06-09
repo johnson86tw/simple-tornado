@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { toFixedHex } from "../utils/ethers";
-import { MerkleTree, MiMCSponge } from "../utils/merkleTree";
+import { toFixedHex } from "../../utils/ethers";
+import { MerkleTree, MiMCSponge } from "../../utils/merkleTree";
 
 const levels = Number(process.env.MERKLE_TREE_HEIGHT) || 16;
 
@@ -13,19 +13,14 @@ export async function shouldBehaveLikeMerkleTree() {
     const tree = new MerkleTree(2);
     tree.insert(toFixedHex("5"));
     const { root, pathElements } = tree.proof(0);
-    const calculatedRoot = MiMCSponge(
-      MiMCSponge("5", pathElements[0]),
-      pathElements[1]
-    );
+    const calculatedRoot = MiMCSponge(MiMCSponge("5", pathElements[0]), pathElements[1]);
     expect(root).to.equal(calculatedRoot);
   });
 
   it("creation odd elements count", async () => {
-    const leaves = [12, 13, 14, 15, 16, 17, 18, 19, 20].map((e) =>
-      e.toString()
-    );
+    const leaves = [12, 13, 14, 15, 16, 17, 18, 19, 20].map(e => e.toString());
     const tree = new MerkleTree(levels);
-    leaves.forEach((leaf) => {
+    leaves.forEach(leaf => {
       tree.insert(leaf);
     });
     const batchTree = new MerkleTree(levels, leaves);
@@ -36,9 +31,9 @@ export async function shouldBehaveLikeMerkleTree() {
   });
 
   it("creation even elements count", async () => {
-    const leaves = [12, 13, 14, 15, 16, 17].map((e) => e.toString());
+    const leaves = [12, 13, 14, 15, 16, 17].map(e => e.toString());
     const tree = new MerkleTree(levels);
-    leaves.forEach((leaf) => {
+    leaves.forEach(leaf => {
       tree.insert(leaf);
     });
     const batchTree = new MerkleTree(levels, leaves);
@@ -49,11 +44,9 @@ export async function shouldBehaveLikeMerkleTree() {
   });
 
   it("should find an element", async () => {
-    const leaves = [12, 13, 14, 15, 16, 17, 18, 19, 20].map((e) =>
-      e.toString()
-    );
+    const leaves = [12, 13, 14, 15, 16, 17, 18, 19, 20].map(e => e.toString());
     const tree = new MerkleTree(levels);
-    leaves.forEach((leaf) => {
+    leaves.forEach(leaf => {
       tree.insert(leaf);
     });
 

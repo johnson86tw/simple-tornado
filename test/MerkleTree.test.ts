@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { BigNumber, Contract, ContractFactory } from "ethers";
 import { ethers } from "hardhat";
 import { toFixedHex } from "../utils/ethers";
-import { shouldBehaveLikeMerkleTree } from "./merkleTree.behavior";
+import { shouldBehaveLikeMerkleTree } from "./behavior/merkleTree.behavior";
 import { MerkleTree as MerkleTreeUtil, MiMCSponge as hashLeftRight } from "../utils/merkleTree";
 
 const HasherPath = "../build/contracts/Hasher.json";

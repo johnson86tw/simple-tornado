@@ -4,7 +4,7 @@ import { Contract, ContractFactory, utils } from "ethers";
 import { ethers } from "hardhat";
 const { provider } = ethers;
 import { toFixedHex } from "../utils/ethers";
-import { shouldBehaveLikeProof } from "./proof.behavior";
+import { shouldBehaveLikeProof } from "./behavior/proof.behavior";
 import { MerkleTree } from "../utils/merkleTree";
 import { genProofArgs, groth16 } from "../utils/snarks";
 import path from "path";

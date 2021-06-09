@@ -1,4 +1,4 @@
-import { MerkleTree } from "../utils/merkleTree";
+import { MerkleTree } from "../../utils/merkleTree";
 
 const levels = Number(process.env.MERKLE_TREE_HEIGHT) || 16;
 
