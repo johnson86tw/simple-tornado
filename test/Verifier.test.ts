@@ -2,9 +2,7 @@ import { expect } from "chai";
 import { Contract, ContractFactory } from "ethers";
 import { ethers } from "hardhat";
 import path from "path";
-import { genProofArgs } from "../utils/snarks";
-// @ts-ignore
-import { groth16 } from "snarkjs";
+import { genProofArgs, groth16 } from "../utils/snarks";
 
 let Verifier: ContractFactory;
 let verifier: Contract;

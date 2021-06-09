@@ -5,21 +5,15 @@ import { ethers } from "hardhat";
 const { provider } = ethers;
 import { toFixedHex } from "../utils/ethers";
 import { shouldBehaveLikeProof } from "./proof.behavior";
-import fs from "fs";
-import path from "path";
-import { unstringifyBigInts } from "../utils/ethers";
 import { MerkleTree } from "../utils/merkleTree";
-import { genProofArgs } from "../utils/crypto";
-
-// import proof.json and public.json
-const publicPath = path.join(__dirname, "../build/public.json");
-const proofPath = path.join(__dirname, "../build/proof.json");
-const pub = unstringifyBigInts(JSON.parse(fs.readFileSync(publicPath, "utf8")));
-const proof = unstringifyBigInts(JSON.parse(fs.readFileSync(proofPath, "utf8")));
+import { genProofArgs, groth16 } from "../utils/snarks";
+import path from "path";
 
 const HasherPath = "../build/contracts/Hasher.json";
 const levels = Number(process.env.MERKLE_TREE_HEIGHT) || 20;
 const denomination = process.env.ETH_AMOUNT || "1000000000000000000"; // 1 ether
+const wasmPath = path.join(__dirname, "../build/circuits/circuit.wasm");
+const zkeyPath = path.join(__dirname, "../build/circuits/circuit_final.zkey");
 
 let Hasher: ContractFactory;
 let Verifier: ContractFactory;
@@ -85,7 +79,10 @@ describe("#withdraw", () => {
 
     await tornado.deposit(commitment, { value: utils.parseEther("1") });
 
-    const proofArgs = await genProofArgs(proof, pub);
+    const input = { a: 4, b: 11 };
+    let { proof, publicSignals } = await groth16.fullProve(input, wasmPath, zkeyPath);
+
+    const proofArgs = await genProofArgs(proof, publicSignals);
     const args = [toFixedHex(tree.root()), toFixedHex(nullifierHash), signers[1].address, signers[0].address, 0, 0];
 
     const before = await provider.getBalance(signers[1].address);

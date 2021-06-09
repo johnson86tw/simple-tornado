@@ -1,7 +1,7 @@
 // @ts-ignore
 import { groth16 } from "snarkjs";
 
-export async function genProofArgs(proof: any, pub: any) {
+async function genProofArgs(proof: any, pub: any) {
   proof = unstringifyBigInts(proof);
   pub = unstringifyBigInts(pub);
   const calldata = await groth16.exportSolidityCallData(proof, pub);
@@ -10,7 +10,7 @@ export async function genProofArgs(proof: any, pub: any) {
 }
 
 // source: https://github.com/iden3/ffjavascript/blob/master/src/utils_bigint.js
-export function unstringifyBigInts(o: any): any {
+function unstringifyBigInts(o: any): any {
   if (typeof o == "string" && /^[0-9]+$/.test(o)) {
     return BigInt(o);
   } else if (Array.isArray(o)) {
@@ -26,3 +26,5 @@ export function unstringifyBigInts(o: any): any {
     return o;
   }
 }
+
+export { genProofArgs, unstringifyBigInts, groth16 };
