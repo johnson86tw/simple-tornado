@@ -9,20 +9,17 @@ import { MerkleTree } from "../utils/merkleTree";
 import { genProofArgs, groth16 } from "../utils/snarks";
 import path from "path";
 
+// build
 const HasherPath = "../build/contracts/Hasher.json";
-const levels = Number(process.env.MERKLE_TREE_HEIGHT) || 20;
-const denomination = process.env.ETH_AMOUNT || "1000000000000000000"; // 1 ether
 const wasmPath = path.join(__dirname, "../build/circuits/circuit.wasm");
 const zkeyPath = path.join(__dirname, "../build/circuits/circuit_final.zkey");
 
-let Hasher: ContractFactory;
-let Verifier: ContractFactory;
-let Tornado: ContractFactory;
+// env
+const levels = Number(process.env.MERKLE_TREE_HEIGHT) || 20;
+const denomination = process.env.ETH_AMOUNT || "1000000000000000000"; // 1 ether
 
-let hasher: Contract;
-let verifier: Contract;
-let tornado: Contract;
-
+let [Hasher, Verifier, Tornado]: ContractFactory[] = [];
+let [hasher, verifier, tornado]: Contract[] = [];
 let signers: SignerWithAddress[];
 
 before(async () => {
