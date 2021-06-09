@@ -1,6 +1,7 @@
 {
   "name": "simple-tornado",
   "scripts": {
+    "build": "bash ./scripts/build_snarks.sh",
     "test": "npx hardhat test --no-compile",
     "ts-node": "ts-node"
   },
