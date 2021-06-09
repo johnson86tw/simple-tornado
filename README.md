@@ -1,11 +1,12 @@
 # Simple Tornado
 
-## version
+## Tech Stack
 - circom 0.5.45
 - snarkjs 0.4.4
 - circomlib 0.5.2
 - solidity 0.7.0
 - ethers: 5.0.26
+- hardhat: 2.0.8
 
 ## Build
 ```

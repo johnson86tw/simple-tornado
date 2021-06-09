@@ -1,9 +1,10 @@
 {
   "name": "simple-tornado",
   "scripts": {
-    "build": "bash ./scripts/build_snarks.sh",
+    "build:circuits": "bash ./scripts/build_circuits.sh",
+    "build:contracts": "bash ./scripts/build_contracts.sh",
     "test": "npx hardhat test --no-compile",
-    "ts-node": "ts-node"
+    "ts": "ts-node"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.1",

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#
+# This file should be store in ./scripts of the project folder
 # This script will build following files in the ./build/circuits
 #
 # circuit.r1cs
@@ -27,7 +27,6 @@ else
 fi
 
 cd ../build/circuits
-echo "directory: $(pwd)"
 
 # generate circuit.r1cs & circuit.sym & circuit.wasm
 if [[ -f ./circuit.r1cs && -f ./circuit.sym && -f ./circuit.wasm ]]; then

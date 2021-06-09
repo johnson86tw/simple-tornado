@@ -4,8 +4,7 @@ const path = require("path");
 const fs = require("fs");
 const genContract = require("circomlib/src/mimcsponge_gencontract.js");
 
-const contractPath = "build/contracts";
-const outputPath = path.join(__dirname, "..", contractPath, "Hasher.json");
+const outputPath = path.join(__dirname, "..", "build/contracts/Hasher.json");
 
 function main() {
   const contract = {
@@ -14,11 +13,8 @@ function main() {
     bytecode: genContract.createCode("mimcsponge", 220),
   };
 
-  if (!fs.existsSync(contractPath)) {
-    fs.mkdirSync(contractPath, { recursive: true });
-  }
-
   fs.writeFileSync(outputPath, JSON.stringify(contract));
+  console.log("success: ./build/contracts/Hasher.json");
 }
 
 main();
