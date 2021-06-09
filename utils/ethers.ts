@@ -18,21 +18,3 @@ export function toFixedHex(number: number | string, length = 32) {
   str = "0x" + str;
   return str;
 }
-
-// source: https://github.com/iden3/ffjavascript/blob/master/src/utils_bigint.js
-export function unstringifyBigInts(o: any): any {
-  if (typeof o == "string" && /^[0-9]+$/.test(o)) {
-    return BigInt(o);
-  } else if (Array.isArray(o)) {
-    return o.map(unstringifyBigInts);
-  } else if (typeof o == "object") {
-    const res: any = {};
-    const keys = Object.keys(o);
-    keys.forEach(k => {
-      res[k] = unstringifyBigInts(o[k]);
-    });
-    return res;
-  } else {
-    return o;
-  }
-}
