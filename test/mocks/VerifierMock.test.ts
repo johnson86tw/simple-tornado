@@ -18,7 +18,6 @@ const proof = unstringifyBigInts(JSON.parse(fs.readFileSync(proofPath, "utf8")))
 
 async function genProof(proof: any, pub: any) {
   const calldata = await groth16.exportSolidityCallData(proof, pub);
-  console.log(calldata);
   let params = JSON.parse("[" + calldata + "]");
   return params;
 }
