@@ -27,4 +27,15 @@ function unstringifyBigInts(o: any): any {
   }
 }
 
-export { genProofArgs, unstringifyBigInts, groth16 };
+// source: https://github.com/no2chem/bigint-buffer/blob/c4d61b5c4fcaab36c55130840e906c162dfce646/src/index.ts#L25
+function toBigIntLE(buf: Buffer) {
+  const reversed = Buffer.from(buf);
+  reversed.reverse();
+  const hex = reversed.toString("hex");
+  if (hex.length === 0) {
+    return BigInt(0);
+  }
+  return BigInt(`0x${hex}`);
+}
+
+export { genProofArgs, unstringifyBigInts, toBigIntLE, groth16 };
