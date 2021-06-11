@@ -8,7 +8,9 @@ import circomlib from "circomlib";
 const rbuffer = (nbytes: number) => crypto.randomBytes(nbytes);
 
 /** Compute pedersen hash */
-const pedersenHash = (data: Buffer) => circomlib.babyJub.unpackPoint(circomlib.pedersenHash.hash(data))[0];
+function pedersenHash(data: Buffer): BigInt {
+  return circomlib.babyJub.unpackPoint(circomlib.pedersenHash.hash(data))[0];
+}
 
 async function genProofArgs(proof: any, pub: any) {
   proof = unstringifyBigInts(proof);

@@ -59,7 +59,7 @@ abstract contract Tornado is MerkleTree, ReentrancyGuard {
         uint256 _refund
     ) external payable nonReentrant {
         require(_fee <= denomination, "Fee exceeds transfer value");
-        require(!nullifierHashes[_nullifierHash], "The not has been already spent");
+        require(!nullifierHashes[_nullifierHash], "The note has been already spent");
         require(isKnownRoot(_root), "Cannot find your merkle root");
         require(verifier.verifyProof(a, b, c, input), "Invalid withdraw proof");
 

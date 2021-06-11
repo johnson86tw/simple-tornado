@@ -5,7 +5,7 @@ import { ethers } from "hardhat";
 const { provider } = ethers;
 import { toFixedHex } from "../utils/ethers";
 import { MerkleTree } from "../utils/merkleTree";
-import { genProofArgs, groth16 } from "../utils/circuit";
+import { genProofArgs, groth16, pedersenHash, rbuffer, toBigIntLE } from "../utils/circuit";
 import path from "path";
 
 // build
@@ -44,7 +44,7 @@ describe("#constructor", () => {
 describe("#deposit", () => {
   it("should emit event", async () => {
     const commitment = toFixedHex(42);
-    await expect(await tornado.deposit(commitment, { value: utils.parseEther("1") })).to.emit(tornado, "Deposit");
+    await expect(tornado.deposit(commitment, { value: utils.parseEther("1") })).to.emit(tornado, "Deposit");
   });
 
   it("should revert if there is a such commitment", async () => {
@@ -65,23 +65,51 @@ describe("#deposit", () => {
 
 describe("#withdraw", () => {
   it("should work", async () => {
-    const commitment = toFixedHex(42);
-    const nullifierHash = toFixedHex(123);
     const privateTransactionAmount = utils.parseEther("1.0");
+
+    const randomBuf = rbuffer(31);
+    const secret = toBigIntLE(randomBuf);
+    const commitment = pedersenHash(randomBuf).toString();
     const tree = new MerkleTree(levels);
+
     tree.insert(commitment);
+    const txResponse = await tornado.deposit(toFixedHex(commitment), { value: privateTransactionAmount });
+    const txReceipt = await txResponse.wait();
+    const depositEvents = txReceipt.events?.filter((x: any) => {
+      return x.event === "Deposit";
+    });
+    const leafIndex = depositEvents[0].args.leafIndex;
+    const merkleProof = tree.proof(leafIndex);
 
-    await tornado.deposit(commitment, { value: privateTransactionAmount });
+    expect(await tornado.isKnownRoot(toFixedHex(tree.root()))).to.equal(true);
 
-    const input = { a: 4, b: 11 };
+    const input = {
+      secret: secret.toString(),
+      root: tree.root(),
+      pathElements: merkleProof.pathElements,
+      pathIndices: merkleProof.pathIndices,
+    };
+
+    const nullifierHash = secret;
+
     let { proof, publicSignals } = await groth16.fullProve(input, wasmPath, zkeyPath);
     const proofArgs = await genProofArgs(proof, publicSignals);
-    const args = [toFixedHex(tree.root()), toFixedHex(nullifierHash), signers[1].address, signers[0].address, 0, 0];
+    const args = [
+      toFixedHex(tree.root()),
+      toFixedHex(nullifierHash.toString()),
+      signers[1].address,
+      signers[0].address,
+      0,
+      0,
+    ];
 
     const before = await provider.getBalance(signers[1].address);
     await tornado.withdraw(...proofArgs, ...args);
     const after = await provider.getBalance(signers[1].address);
 
     expect(after.sub(before)).to.equal(privateTransactionAmount);
+    expect(await tornado.isSpent(toFixedHex(nullifierHash.toString()))).to.equal(true);
+    // should prevent double spend
+    await expect(tornado.withdraw(...proofArgs, ...args)).to.be.revertedWith("The note has been already spent");
   });
 });
