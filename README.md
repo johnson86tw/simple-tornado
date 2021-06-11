@@ -11,8 +11,8 @@ This is a simple version of [Tornado Cash](https://tornado.cash/) which is a pri
 - typescript
 
 ## Pre-requisites
-- install Node.js.
-- Install circom and snarkjs.
+- install Node.js with cmd `node`
+- Install `circom` and `snarkjs` as global command-line
 ```
 npm install -g circom
 npm install -g snarkjs
@@ -23,15 +23,14 @@ npm install -g snarkjs
 ```
 yarn
 ```
-- To build circuits, you should install circom and snark in npm global for cmd like `circom` and `snarkjs` at first.
+- pre-requisites: `circom` and `snarkjs` as global command-line
 
 ```
 yarn build
 ```
 
 ## Test
-- total 78.73 seconds
-
+- pre-requisites: run `yarn build` for circuits and Hasher.json
 ```
 yarn test
 ```
@@ -39,7 +38,7 @@ or
 ```
 npx hardhat test test/FILENAME.test.ts
 ```
-- pre-request: build Verifier.sol and Hasher.json by `yarn build` at first.
 
 ## Questions
 - why we need FIELD_SIZE and ZERO_VALUE in the merkle tree? (seems to be called "snark scalar field")
+- Is it possible to have nullifier equal to secret? (this project implements like this but the original tornado-core divide nullifier and secret)
