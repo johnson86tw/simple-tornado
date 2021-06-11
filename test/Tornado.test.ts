@@ -35,13 +35,13 @@ beforeEach(async function () {
   tornado = await Tornado.deploy(verifier.address, denomination, levels, hasher.address);
 });
 
-describe("#constructor", () => {
+describe("Tornado #constructor", () => {
   it("should initialize ", async () => {
     expect(await tornado.denomination()).to.equal(denomination);
   });
 });
 
-describe("#deposit", () => {
+describe("Tornado #deposit", () => {
   it("should emit event", async () => {
     const commitment = toFixedHex(42);
     await expect(tornado.deposit(commitment, { value: utils.parseEther("1") })).to.emit(tornado, "Deposit");
@@ -63,7 +63,7 @@ describe("#deposit", () => {
   });
 });
 
-describe("#withdraw", () => {
+describe("Tornado #withdraw", () => {
   it("should work", async () => {
     const privateTransactionAmount = utils.parseEther("1.0");
 

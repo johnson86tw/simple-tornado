@@ -4,7 +4,7 @@ import { MerkleTree, MiMCSponge } from "../../utils/merkleTree";
 
 const levels = Number(process.env.MERKLE_TREE_HEIGHT) || 20;
 
-describe("merkleTree in ts", () => {
+describe("merkleTree.ts", () => {
   it("index_to_key", async () => {
     expect(MerkleTree.indexToKey(2, 4)).to.equal("2-4");
   });

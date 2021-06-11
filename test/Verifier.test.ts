@@ -31,7 +31,7 @@ beforeEach(async function () {
   await verifier.deployed();
 });
 
-describe("#verifyProof", () => {
+describe("Verifier #verifyProof", () => {
   it("should be verified", async function () {
     const input = {
       secret,

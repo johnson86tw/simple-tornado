@@ -23,7 +23,7 @@ beforeEach(async function () {
   merkleTree = await MerkleTree.deploy(levels, hasher.address);
 });
 
-describe("#contructor", () => {
+describe("MerkleTree #contructor", () => {
   it("should initialize", async () => {
     const zeroValue: BigNumber = await merkleTree.ZERO_VALUE();
 
@@ -32,7 +32,7 @@ describe("#contructor", () => {
   });
 });
 
-describe("#hashLeftRight", () => {
+describe("MerkleTree #hashLeftRight", () => {
   it("should return MiMC multi-hash inside the field", async () => {
     const left = toFixedHex(123);
     const right = toFixedHex(456);
@@ -42,7 +42,7 @@ describe("#hashLeftRight", () => {
   });
 });
 
-describe("#insert", () => {
+describe("MerkleTree #insert", () => {
   it("should insert", async () => {
     const tree = new MerkleTreeUtil(levels);
 
@@ -71,7 +71,7 @@ describe("#insert", () => {
   });
 });
 
-describe("#isKnownRoot", () => {
+describe("MerkleTree #isKnownRoot", () => {
   it("should check outdated root", async () => {
     const tree = new MerkleTreeUtil(levels);
     for (let i = 0; i < 5; i++) {
