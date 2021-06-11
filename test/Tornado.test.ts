@@ -5,7 +5,7 @@ import { ethers } from "hardhat";
 const { provider } = ethers;
 import { toFixedHex } from "../utils/ethers";
 import { MerkleTree } from "../utils/merkleTree";
-import { genProofArgs, groth16 } from "../utils/snarks";
+import { genProofArgs, groth16 } from "../utils/circuit";
 import path from "path";
 
 // build

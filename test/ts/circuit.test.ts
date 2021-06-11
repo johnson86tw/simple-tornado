@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import path from "path";
 import { MerkleTree } from "../../utils/merkleTree";
-import { groth16, rbuffer, toBigIntLE, pedersenHash } from "../../utils/snarks";
+import { groth16, rbuffer, toBigIntLE, pedersenHash } from "../../utils/circuit";
 
 const levels = Number(process.env.MERKLE_TREE_HEIGHT) || 20;
 

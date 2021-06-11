@@ -2,7 +2,6 @@ import { expect } from "chai";
 import { BigNumber, Contract, ContractFactory } from "ethers";
 import { ethers } from "hardhat";
 import { toFixedHex } from "../utils/ethers";
-import { shouldBehaveLikeMerkleTree } from "./behavior/merkleTree.behavior";
 import { MerkleTree as MerkleTreeUtil, MiMCSponge as hashLeftRight } from "../utils/merkleTree";
 
 const HasherPath = "../build/contracts/Hasher.json";
@@ -41,10 +40,6 @@ describe("#hashLeftRight", () => {
 
     expect(hash).to.equal("0x" + BigInt(hashLeftRight(left, right)).toString(16));
   });
-});
-
-describe("merkleTreeUtil", () => {
-  shouldBehaveLikeMerkleTree();
 });
 
 describe("#insert", () => {
