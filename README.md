@@ -1,5 +1,5 @@
 # Simple Tornado
-This is a simple version of [Tornado Cash](https://tornado.cash/) which is a private transactions solution based on zkSNARKs. The project rewrites from [tornado-core](https://github.com/tornadocash/tornado-core), and it's suitable for a beginner to learn development of applications with Zero Knowledge Proof.
+This is a simple version of [Tornado Cash](https://tornado.cash/) which is a private transactions solution based on zkSNARKs. The project rewrites from [tornado-core](https://github.com/tornadocash/tornado-core), and it's suitable for a beginner to learn development of applications with Zero Knowledge Proofs.
 
 ## Tech Stack
 - circom 0.5.45

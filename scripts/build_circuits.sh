@@ -12,16 +12,24 @@
 # verification_key.json
 
 # constants
-TARGET_CIRCUIT=../../circuits/test.circom
-PTAU_FILE=powersOfTau28_hez_final_11.ptau
+TARGET_CIRCUIT=../../circuits/withdraw.circom
+PTAU_FILE=powersOfTau28_hez_final_15.ptau
 ENTROPY_FOR_ZKEY=mnbvc
 
 cd "$(dirname "$0")"
 
-# build directory ../build/circuits
-mkdir -p ../build/circuits
+# to project root
+cd ..
 
-cd ../build/circuits
+# load .env
+if [ -f .env ]; then
+    export $(grep -v '^#' .env | xargs)
+fi
+
+# build directory ../build/circuits
+mkdir -p ./build/circuits
+
+cd ./build/circuits
 
 # generate circuit.r1cs & circuit.sym & circuit.wasm
 

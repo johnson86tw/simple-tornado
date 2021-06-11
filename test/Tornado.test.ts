@@ -4,7 +4,6 @@ import { Contract, ContractFactory, utils } from "ethers";
 import { ethers } from "hardhat";
 const { provider } = ethers;
 import { toFixedHex } from "../utils/ethers";
-import { shouldBehaveLikeProof } from "./behavior/proof.behavior";
 import { MerkleTree } from "../utils/merkleTree";
 import { genProofArgs, groth16 } from "../utils/snarks";
 import path from "path";
@@ -18,6 +17,7 @@ const zkeyPath = path.join(__dirname, "../build/circuits/circuit_final.zkey");
 const levels = Number(process.env.MERKLE_TREE_HEIGHT) || 20;
 const denomination = process.env.ETH_AMOUNT || "1000000000000000000"; // 1 ether
 
+// contract
 let [Hasher, Verifier, Tornado]: ContractFactory[] = [];
 let [hasher, verifier, tornado]: Contract[] = [];
 let signers: SignerWithAddress[];
@@ -63,22 +63,18 @@ describe("#deposit", () => {
   });
 });
 
-describe("snark proof verification on js side", () => {
-  shouldBehaveLikeProof();
-});
-
 describe("#withdraw", () => {
   it("should work", async () => {
     const commitment = toFixedHex(42);
     const nullifierHash = toFixedHex(123);
+    const privateTransactionAmount = utils.parseEther("1.0");
     const tree = new MerkleTree(levels);
     tree.insert(commitment);
 
-    await tornado.deposit(commitment, { value: utils.parseEther("1") });
+    await tornado.deposit(commitment, { value: privateTransactionAmount });
 
     const input = { a: 4, b: 11 };
     let { proof, publicSignals } = await groth16.fullProve(input, wasmPath, zkeyPath);
-
     const proofArgs = await genProofArgs(proof, publicSignals);
     const args = [toFixedHex(tree.root()), toFixedHex(nullifierHash), signers[1].address, signers[0].address, 0, 0];
 
@@ -86,6 +82,6 @@ describe("#withdraw", () => {
     await tornado.withdraw(...proofArgs, ...args);
     const after = await provider.getBalance(signers[1].address);
 
-    expect(after.sub(before)).to.equal(utils.parseEther("1"));
+    expect(after.sub(before)).to.equal(privateTransactionAmount);
   });
 });
